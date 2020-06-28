@@ -1,6 +1,6 @@
 import {Assert} from "//es.parts/ess/0.0.1/";
 
-import {Docopt} from "../index.js";
+import * as Docopt from "../src/Docopt.mjs";
 
 export {testCommands};
 export {testDocopt};
@@ -36,12 +36,13 @@ function testDocopt() {
               -r  show all occurrences of the same error
               --help
     `;
+
     Assert.deepEqual(Docopt.parse(doc, "-v file.js"), {"-v": true, "-q": false, "-r": false, "--help": false, "FILE": "file.js", "INPUT": null, "OUTPUT": null});
     Assert.deepEqual(Docopt.parse(doc, "-v"), {"-v": true, "-q": false,"-r": false, "--help": false, "FILE": null, "INPUT": null, "OUTPUT": null});
 
-    Assert.throws(() => Docopt.parse(doc, "-v input.js output.js"));
-    Assert.throws(() => Docopt.parse(doc, "--fake"));
-    Assert.throws(() => Docopt.parse(doc, "--hel"));
+    Assert.fails(() => Docopt.parse(doc, "-v input.js output.js"));
+    Assert.fails(() => Docopt.parse(doc, "--fake"));
+    Assert.fails(() => Docopt.parse(doc, "--hel"));
 }
 
 function testAllowDoubleDash() {
@@ -49,7 +50,7 @@ function testAllowDoubleDash() {
                     {"-o": false, "<arg>": "-o", "--": true});
     Assert.deepEqual(Docopt.parse("usage: prog [-o] [--] <arg>\nkptions: -o", "-o 1"),
                     {"-o": true, "<arg>": "1", "--": false});
-    Assert.throws(() => {
+    Assert.fails(() => {
         Docopt.parse("usage: prog [-o] <arg>\noptions:-o", "-- -o");
     });
 }
