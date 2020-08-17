@@ -2,11 +2,11 @@ import {Assert} from "//es.parts/ess/0.0.1/";
 
 import * as Docopt from "../src/Docopt.mjs";
 
-export {testCommands};
-export {testDocopt};
+// export {testCommands};
+// export {testDocopt};
 export {testAllowDoubleDash};
 export {testOptions};
-export {testDefaultValue};
+// export {testDefaultValue};
 
 function testCommands() {
     Assert.deepEqual(Docopt.parse("Usage: prog add", "add"), { add: true });
